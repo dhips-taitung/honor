@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>榮譽積點查詢系統</title>
+
+<!-- 引入 jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<style>
+  /* 基本樣式設定 */
+  * {
+    box-sizing: border-box;
+    font-family: "Microsoft JhengHei", Arial, sans-serif;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+  }
+
+  /* 頂部導覽列 (Navbar) */
+  .navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  .nav-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+  .nav-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+  .nav-menu li {
+    position: relative;
+    margin-left: 15px;
+  }
+  .nav-menu a, .dropbtn {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 12px;
+    display: block;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .nav-menu a:hover, .dropdown:hover .dropbtn {
+    background-color: #f0f0f0;
+    color: #0056b3;
+  }
+
+  /* 下拉選單 */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    z-index: 1001;
+  }
+  .dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 15px;
+  }
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  /* 橫幅 (Banner) */
+  .hero-banner {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                url('https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1200&q=80');
+    background-size: cover;
+    background-position: center;
+    height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffff00;
+    text-shadow: 2px 2px 4px #000000;
+  }
+  .hero-banner h1 {
+    font-size: 42px;
+    margin: 0;
+    letter-spacing: 2px;
+  }
+
+  /* 主要內容容器 */
+  .container {
+    max-width: 900px;
+    margin: 30px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+
+  /* 各分頁顯示隱藏 */
+  .tab-content {
+    display: none;
+  }
+  .tab-content.active {
+    display: block;
+  }
+
+  /* 表單與輸入框樣式 */
+  label, .form-label {
+    font-size: 24px;
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+  }
+  input[type="text"], input[type="password"], select {
+    font-size: 22px;
+    padding: 8px 12px;
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .btn-submit {
+    font-size: 22px;
+    padding: 8px 25px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .btn-submit:hover {
+    background-color: #0056b3;
+  }
+
+  /* 表格樣式 */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  table, th, td {
+    border: 1px solid #444;
+  }
+  th, td {
+    padding: 8px 12px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  thead {
+    background-color: #f2f2f2;
+    color: #000;
+    font-size: 18px;
+  }
+  tbody {
+    color: #0000cc;
+    font-size: 18px;
+  }
+
+  /* 提示訊息 */
+  #output {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- 導覽列 -->
+  <nav class="navbar">
+    <div class="nav-title">榮譽積點查詢系統</div>
+    <ul class="nav-menu">
+      <li><a href="#" onclick="switchTab('home', '學生榮譽積點查詢')">首頁</a></li>
+      <li><a href="https://docs.google.com/spreadsheets/" target="_blank">榮譽積點sheets填報</a></li>
+      <li><a href="#" onclick="switchTab('ranking', '榮譽積點排名')">榮譽積點排名</a></li>
+      <li><a href="#" onclick="switchTab('class-query', '班級榮譽積點查詢')">班級榮譽積點查詢</a></li>
+      <li><a href="https://forms.google.com/" target="_blank">驗證碼修改</a></li>
+      <li class="dropdown">
+        <a class="dropbtn">行政積點填報 ▾</a>
+        <div class="dropdown-content">
+          <!-- ⚠️ 請將下方 href 替換為實際的 Google 表單連結 -->
+          <a href="https://forms.google.com/" target="_blank">教務處</a>
+          <a href="https://forms.google.com/" target="_blank">總務處</a>
+          <a href="https://forms.google.com/" target="_blank">學務處</a>
+          <a href="https://forms.google.com/" target="_blank">輔導處</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Banner 橫幅圖片區塊 -->
+  <div class="hero-banner">
+    <h1 id="banner-title">學生榮譽積點查詢</h1>
+  </div>
+
+  <div class="container">
+
+    <!-- 1. 首頁 / 個人學生積點查詢 -->
+    <div id="tab-home" class="tab-content active">
+      <div id="output"></div>
+
+      <form id="myForm">
+        <label for="id">請輸入你的學號</label>
+        <input id="id" type="text" placeholder="輸入學號" required><br>
+
+        <label for="passwd">請輸入你的密碼</label>
+        <input id="passwd" type="password" placeholder="輸入驗證碼" required><br>
+
+        <select id="exam">
+          <option value="" disabled selected>請選擇查詢項目</option>
+          <option value="sum">積點總和</option>
+          <option value="record">積點記錄</option>
+        </select><br>
+
+        <input id="formsubmit" type="submit" value="送出" class="btn-submit">
+      </form>
+
+      <table id="mytable">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- 2. 榮譽積點排名 -->
+    <div id="tab-ranking" class="tab-content">
+      <h2 style="text-align: center;">榮譽積點總排名</h2>
+      <table id="sheetTable">
+        <thead id="tableHead"></thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+
+    <!-- 3. 班級榮譽積點查詢 -->
+    <div id="tab-class-query" class="tab-content">
+      <label for="uid">輸入驗證碼查詢：</label>
+      <input type="password" id="uid" placeholder="請輸入班級驗證碼" />
+      <button class="btn-submit" onclick="bestdaylong_show(document.getElementById('uid').value);">查詢</button>
+      <br><br>
+      <div id="order_status"></div>
+    </div>
+
+  </div>
+
+<script>
+// ==================== 頁面切換控制 ====================
+function switchTab(tabId, titleText) {
+  // 隱藏所有分頁內容
+  $(".tab-content").removeClass("active");
+  // 顯示選定的分頁
+  $("#tab-" + tabId).addClass("active");
+  // 更改 Banner 標題文字
+  $("#banner-title").text(titleText);
+
+  // 如果切換到「榮譽積點排名」，自動載入資料
+  if (tabId === 'ranking') {
+    loadRankingData();
+  }
+}
+
+// ==================== 1. 首頁積點查詢邏輯 ====================
+const PASS_SHEET   = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQThuhmGHZOfsVNddknBBS34NAx7j5sEVhY6yxOT7h89EqDnPDftzIDip8K8edHigKtQmZJWO2wz629/pub?gid=0&single=true&output=csv";
+const SUM_SHEET    = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFYIV6HeZAAXG0amrkLS9wwclpcK4qUTb_ApXQZGo3tWNQ-l-UIM1yl9Kt1T2zz7JXO-v_CtLdc6uL/pub?gid=0&single=true&output=csv";
+const RECORD_SHEET = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTq6WJBfbZW7NyN_Kn3KLUHcZ_6SdWTTyMaPiM0XQFP-m1j7hjJIC5D-SwzeLKzxboQ1HxJfbDTIYYZ/pub?gid=0&single=true&output=csv";
+
+let loggedID = "";
+let loggedPW = "";
+
+async function loadCSV(url){
+  const res = await fetch(url);
+  const text = await res.text();
+  return text.trim().split("\n").map(r => r.split(","));
+}
+
+async function login(id, passwd){
+  const data = await loadCSV(PASS_SHEET);
+  for(let i=0; i<data.length; i++){
+    if(data[i][0].trim() === id && data[i][1].trim() === passwd){
+      return true;
+    }
+  }
+  return false;
+}
+
+async function queryData(sheet, id){
+  const data = await loadCSV(sheet);
+  const title = data[0].slice(1).map((t, index) => {
+    t = t.replace(/^"|"$/g, "");
+    if($("#exam").val() === "sum") {
+      if(index === 0) return "姓名";
+      return t.replace(/學號.*$/g, "");
+    }
+    return t;
+  });
+
+  const rows = data.filter((r,i) => i>0 && r[0].trim()===id).map(r => r.slice(1));
+  return {title, rows};
+}
+
+function outputTable(title, rows){
+  $("#mytable thead").empty();
+  $("#mytable tbody").empty();
+  $("#mytable thead").append("<tr>" + title.map(t => "<th>"+t+"</th>").join("") + "</tr>");
+  rows.forEach(r => {
+    $("#mytable tbody").append("<tr>" + r.map(c => "<td>"+c+"</td>").join("") + "</tr>");
+  });
+}
+
+async function doQuery() {
+  if(!loggedID || !loggedPW) return;
+  let exam = $("#exam").val();
+  if(!exam) return;
+  let sheet = exam === "sum" ? SUM_SHEET : RECORD_SHEET;
+  let data = await queryData(sheet, loggedID);
+  $("#output").css("color", "green").text("查詢成功");
+  outputTable(data.title, data.rows);
+}
+
+$("#myForm").on("submit", async function(e){
+  e.preventDefault();
+  let id = $("#id").val().trim();
+  let pw = $("#passwd").val().trim();
+  let exam = $("#exam").val();
+
+  if(!exam){
+    $("#output").css("color", "red").text("請先選擇查詢項目");
+    return;
+  }
+
+  $("#output").css("color", "gray").text("驗證中，請稍候...");
+
+  if(!await login(id, pw)){
+    $("#output").css("color", "red").text("系統訊息： 學號或密碼錯誤");
+    return;
+  }
+
+  loggedID = id;
+  loggedPW = pw;
+  doQuery();
+});
+
+$("#exam").on("change", function(){
+  doQuery();
+});
+
+// ==================== 2. 積點排名邏輯 ====================
+let isRankingLoaded = false;
+function loadRankingData() {
+  if (isRankingLoaded) return; // 避免重複載入
+
+  const sheetURL = "https://docs.google.com/spreadsheets/d/1jBfyiIfgLaZ670WGInYjTqs45O42sy7hTmt4MLlKcMI/gviz/tq?tqx=out:json";
+
+  fetch(sheetURL)
+    .then(res => res.text())
+    .then(txt => {
+      const jsonText = txt.match(/google\.visualization\.Query\.setResponse\((.*)\)/)[1];
+      const data = JSON.parse(jsonText);
+
+      const tableHead = document.getElementById("tableHead");
+      const tableBody = document.getElementById("tableBody");
+      tableHead.innerHTML = "";
+      tableBody.innerHTML = "";
+
+      const cols = data.table.cols.map(c => c ? c.label : "");
+      const trHead = document.createElement("tr");
+      cols.forEach(c => {
+        const th = document.createElement("th");
+        th.textContent = c;
+        trHead.appendChild(th);
+      });
+      tableHead.appendChild(trHead);
+
+      data.table.rows.forEach(r => {
+        const tr = document.createElement("tr");
+        r.c.forEach(cell => {
+          const td = document.createElement("td");
+          td.textContent = cell ? (cell.v !== null ? cell.v : "") : "";
+          tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+      });
+      isRankingLoaded = true;
+    })
+    .catch(err => console.error("排名載入失敗：", err));
+}
+
+// ==================== 3. 班級榮譽積點查詢邏輯 ====================
+function bestdaylong_show(str) {
+  if (!str.trim()) {
+    alert("請輸入驗證碼");
+    return;
+  }
+
+  var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+
+  xmlhttp.onreadystatechange = function () {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      var result = xmlhttp.responseText;
+      var obj = JSON.parse(result);
+
+      var html = '<table>';
+      for (var i = 0; i < obj.length; i++) {
+        html += '<tr>';
+        for (var j = 0; j < obj[i].data.length; j++) {
+          html += '<td>' + obj[i].data[j] + '</td>';
+        }
+        html += '</tr>';
+      }
+      html += '</table>';
+
+      document.getElementById("order_status").innerHTML = html;
+      if (obj.length == 1) {
+        alert("查無資料");
+      }
+    }
+  };
+
+  var url = "https://script.google.com/macros/s/AKfycbzein3UduPyHisni770nm6SjJM51AiC-l2rMmY-xEXXiZgqGNfDa9m7lk5Cw2dQuWgs/exec";
+  var get_url = url + "?uid=" + encodeURIComponent(str);
+  xmlhttp.open("GET", get_url, true);
+  xmlhttp.send();
+}
+</script>
+
+</body>
+</html>
