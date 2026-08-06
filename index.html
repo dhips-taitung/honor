@@ -111,7 +111,7 @@
 
   /* 主要內容容器 */
   .container {
-    max-width: 900px;
+    max-width: 950px;
     margin: 30px auto;
     background: #ffffff;
     padding: 30px;
@@ -187,24 +187,58 @@
     font-weight: bold;
     margin-bottom: 10px;
   }
+
+  /* 班級積點填報 (矩陣按鈕樣式) */
+  .class-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 10px;
+  }
+  .class-btn {
+    display: block;
+    text-decoration: none;
+    color: #1a73e8;
+    border: 1.5px solid #1a73e8;
+    background-color: #ffffff;
+    padding: 12px 0;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+  }
+  .class-btn:hover {
+    background-color: #e8f0fe;
+    color: #1557b0;
+    border-color: #1557b0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  }
+
+  /* 響應式微調 (手機螢幕轉為雙欄) */
+  @media (max-width: 600px) {
+    .class-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+  }
 </style>
 </head>
 
 <body>
 
-  <!-- 導覽列 -->
+  <!-- 頂部導覽列 -->
   <nav class="navbar">
     <div class="nav-title">榮譽積點查詢系統</div>
     <ul class="nav-menu">
       <li><a href="#" onclick="switchTab('home', '學生榮譽積點查詢')">首頁</a></li>
-      <li><a href="https://docs.google.com/spreadsheets/" target="_blank">榮譽積點sheets填報</a></li>
+      <li><a href="#" onclick="switchTab('sheets-fill', '班級積點填報')">榮譽積點sheets填報</a></li>
       <li><a href="#" onclick="switchTab('ranking', '榮譽積點排名')">榮譽積點排名</a></li>
       <li><a href="#" onclick="switchTab('class-query', '班級榮譽積點查詢')">班級榮譽積點查詢</a></li>
       <li><a href="https://forms.google.com/" target="_blank">驗證碼修改</a></li>
       <li class="dropdown">
         <a class="dropbtn">行政積點填報 ▾</a>
         <div class="dropdown-content">
-          <!-- ⚠️ 請將下方 href 替換為實際的 Google 表單連結 -->
           <a href="https://forms.google.com/" target="_blank">教務處</a>
           <a href="https://forms.google.com/" target="_blank">總務處</a>
           <a href="https://forms.google.com/" target="_blank">學務處</a>
@@ -214,7 +248,7 @@
     </ul>
   </nav>
 
-  <!-- Banner 橫幅圖片區塊 -->
+  <!-- Banner 橫幅 -->
   <div class="hero-banner">
     <h1 id="banner-title">學生榮譽積點查詢</h1>
   </div>
@@ -247,7 +281,48 @@
       </table>
     </div>
 
-    <!-- 2. 榮譽積點排名 -->
+    <!-- 2. 榮譽積點 sheets 填報 (班級積點填報) -->
+    <div id="tab-sheets-fill" class="tab-content">
+      <div class="class-grid">
+        <!-- 1年級 -->
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1oCat4snI4SDqwAl33erp7vBTtof_fMzLtdbfiV9Czkg/edit?usp=drive_link" target="_blank">101</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1jTXaXkjQ9rZuy4CBMb56FevC71iG4wj1ttw4OC1meLs/edit?usp=drive_link" target="_blank">102</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1UN7jT28lT4hKWlrQzUgkTDrjqcZ3axUeBHVIm-qahlM/edit?usp=drive_link" target="_blank">103</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/11LDwGLAllcDTQToyiffYxLPkGsND4vvU7kpUeUaBA0Y/edit?usp=drive_link" target="_blank">104</a>
+
+        <!-- 2年級 -->
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1l9SQSFQH0IRuUDm8IhekMyBLOO39TjOJh8G_RAQt_Xk/edit?usp=drive_link" target="_blank">201</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1B9ql1JTM6Iom6E52_USmGKVNJrzVO_sBu2R--x1GPJ8/edit?usp=drive_link" target="_blank">202</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1aPxelUnYg_eRicB15icStrW9J1a3HMEsh6NQsK_Tefs/edit?usp=drive_link" target="_blank">203</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1EJpIhqLGankI5spsu0wAMLyvTk-pDEZFHLe3IvgjVpw/edit?usp=drive_link" target="_blank">204</a>
+
+        <!-- 3年級 -->
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1Ngh1yg06JCqIB04ikXL7Wtfoyo7GHBFrJ7Sh9OBoVcM/edit?usp=drive_link" target="_blank">301</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1IxcsGk8pFNpKtsnAcZyr2LX-NmoXcVOcxYHKaAmeZzc/edit?usp=drive_link" target="_blank">302</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/122H0T4qT-pgYkh9mvKI_clb0ddcqVvwI1XcwXdkrTiw/edit?usp=drive_link" target="_blank">303</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1Zr5XMw_YeH6EEgKEOKlYsz5KP9Y8HXxXfyIeDqBwhn0/edit?usp=drive_link" target="_blank">304</a>
+
+        <!-- 4年級 -->
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1yx-PbmC-nJM6Kb_wP7y5Xruv6g9cH5_XpTLci7AGY5Y/edit?usp=drive_link" target="_blank">401</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1EUb7_q-H509j_ZafnKO41VbSYxuvxHRhZVAjuOoEtD8/edit?usp=drive_link" target="_blank">402</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1Wu1jfSoCf3EX6gBHpR07s9iqiNrpZFd64ysQNPDcE6M/edit?usp=drive_link" target="_blank">403</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1tObaFg2LYlfHVpYxZaQuZikr9QcOONi2oqrNFuLdmic/edit?usp=drive_link" target="_blank">404</a>
+
+        <!-- 5年級 -->
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1pswN0y2oB2ipLph1dsNeI8kotESyQk2nRLovkBaeang/edit?usp=drive_link" target="_blank">501</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1CPBigXyPmOpmxeQw1l1SzFuWvTpIXVrJYj7cK3ZmRHY/edit?usp=drive_link" target="_blank">502</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1NomE4uRXT5xsT3fZmyGb-cQcNHR5a5Cp_Yfy3FpysUA/edit?usp=drive_link" target="_blank">503</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1CkPpTfLDyWgaLv9QhJfadFqUNOKBfi55F-JSbptvN8c/edit?usp=drive_link" target="_blank">504</a>
+
+        <!-- 6年級 -->
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1NhM74ZW_GeO1NlOyn7MdEfjmXovRo3wjAyeRxuTWs9I/edit?usp=drive_link" target="_blank">601</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1wDQEQuYINTZ_pQMASy6lhzxo0elQcJWcz2cqZBFZ0FQ/edit?usp=drive_link" target="_blank">602</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/18ExBhPuuNbtxWKRG6K_kc7AJo8nC03FLL-UHYXeyWqA/edit?usp=drive_link" target="_blank">603</a>
+        <a class="class-btn" href="https://docs.google.com/spreadsheets/d/1a1AuwBg6ZEHe_zOXuMib5LWmfODxXobeUoDgKD-dOD4/edit?usp=drive_link" target="_blank">604</a>
+      </div>
+    </div>
+
+    <!-- 3. 榮譽積點排名 -->
     <div id="tab-ranking" class="tab-content">
       <h2 style="text-align: center;">榮譽積點總排名</h2>
       <table id="sheetTable">
@@ -256,7 +331,7 @@
       </table>
     </div>
 
-    <!-- 3. 班級榮譽積點查詢 -->
+    <!-- 4. 班級榮譽積點查詢 -->
     <div id="tab-class-query" class="tab-content">
       <label for="uid">輸入驗證碼查詢：</label>
       <input type="password" id="uid" placeholder="請輸入班級驗證碼" />
@@ -327,7 +402,7 @@ function outputTable(title, rows){
   $("#mytable tbody").empty();
   $("#mytable thead").append("<tr>" + title.map(t => "<th>"+t+"</th>").join("") + "</tr>");
   rows.forEach(r => {
-    $("#mytable tbody").append("<tr>" + r.map(c => "<td>"+c+"</td>").join("") + "</tr>");
+    $("#mytable tbody").append("<tr>" + r.map(c => "<td>"+c+"</td>").join("")+"</tr>");
   });
 }
 
@@ -368,10 +443,10 @@ $("#exam").on("change", function(){
   doQuery();
 });
 
-// ==================== 2. 積點排名邏輯 ====================
+// ==================== 3. 積點排名邏輯 ====================
 let isRankingLoaded = false;
 function loadRankingData() {
-  if (isRankingLoaded) return; // 避免重複載入
+  if (isRankingLoaded) return;
 
   const sheetURL = "https://docs.google.com/spreadsheets/d/1jBfyiIfgLaZ670WGInYjTqs45O42sy7hTmt4MLlKcMI/gviz/tq?tqx=out:json";
 
@@ -409,7 +484,7 @@ function loadRankingData() {
     .catch(err => console.error("排名載入失敗：", err));
 }
 
-// ==================== 3. 班級榮譽積點查詢邏輯 ====================
+// ==================== 4. 班級榮譽積點查詢邏輯 ====================
 function bestdaylong_show(str) {
   if (!str.trim()) {
     alert("請輸入驗證碼");
