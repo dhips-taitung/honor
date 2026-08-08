@@ -209,12 +209,20 @@
     min-width: 200px;
   }
 
-  /* 班級積點查詢表格可兌換點數欄位 */
+  /* 💻【新增/修改】班級積點查詢表格 (網頁版欄位調整) */
+  /* 1. 「Superkids兌換」與「榮譽獎狀兌換」欄位縮小寬度 */
+  #order_status table td:nth-child(6),
+  #order_status table td:nth-child(7) {
+    padding: 8px 6px;
+    width: 13%;
+  }
+
+  /* 2. 「可兌換點數」欄位調整，確保標題 5 個字完整不爆框 */
   #order_status table td:last-child {
     white-space: nowrap;
-    min-width: unset;
-    width: 8%;
-    max-width: 90px;
+    min-width: 110px;  /* 確保能完整容納「可兌換點數」 */
+    padding: 8px 8px;
+    width: 12%;
   }
 
   thead {
@@ -352,25 +360,33 @@
       font-size: 28px;
     }
 
-    /* 縮減手機版邊邊留白，爭取更多表格欄位空間 */
     .container {
       margin: 10px auto;
       padding: 15px 8px;
       width: 98%;
     }
 
-    /* 📱【新增/修改】手機版表格自動適應寬度 */
+    /* 手機版表格自動適應寬度 */
     table {
       width: 100%;
       table-layout: auto;
     }
     th, td {
-      padding: 6px 2px; /* 緊湊內距，避免撐寬 */
-      font-size: 13px;   /* 調整手機版字級，讓 7 個欄位完美並排 */
+      padding: 6px 2px;
+      font-size: 13px;
       white-space: nowrap;
     }
     thead, tbody {
       font-size: 13px;
+    }
+
+    /* 手機版班級查詢表格內距還原為手機緊湊模式 */
+    #order_status table td:nth-child(6),
+    #order_status table td:nth-child(7),
+    #order_status table td:last-child {
+      padding: 6px 2px;
+      min-width: auto;
+      width: auto;
     }
 
     /* 手機版首頁表格最小寬度調整 */
