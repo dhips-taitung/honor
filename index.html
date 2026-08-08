@@ -64,7 +64,36 @@
     color: #0056b3;
   }
 
-  /* 下拉選單 */
+  /* 漢堡圖示與關閉按鈕（預設桌面版隱藏） */
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 26px;
+    cursor: pointer;
+    padding: 5px 10px;
+    color: #333;
+  }
+  .sidebar-close {
+    display: none;
+  }
+
+  /* 側邊欄背景遮罩 */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1001;
+  }
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  /* 電腦版下拉選單 */
   .dropdown-content {
     display: none;
     position: absolute;
@@ -74,7 +103,7 @@
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     border-radius: 4px;
     overflow: hidden;
-    z-index: 1001;
+    z-index: 1002;
   }
   .dropdown-content a {
     color: #333;
@@ -157,27 +186,37 @@
     background-color: #0056b3;
   }
 
-/* 表格樣式 */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-table, th, td {
-  border: 1px solid #444;
-}
-th, td {
-  padding: 8px 12px;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap; /* 【新增】強制表格欄位內的文字不要換行 */
-}
+  /* 表格樣式 */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  table, th, td {
+    border: 1px solid #444;
+  }
+  th, td {
+    padding: 8px 12px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
 
-/* 【新增】針對最後一欄「事蹟」，允許其長文字自由換行並維持適當寬度 */
-th:last-child, td:last-child {
-  white-space: normal;
-  min-width: 200px;
-}
+  /* 首頁個人查詢表格事蹟欄位 */
+  #mytable th:last-child, 
+  #mytable td:last-child {
+    white-space: normal;
+    min-width: 200px;
+  }
+
+  /* 班級積點查詢表格可兌換點數欄位 */
+  #order_status table td:last-child {
+    white-space: nowrap;
+    min-width: unset;
+    width: 8%;
+    max-width: 90px;
+  }
+
   thead {
     background-color: #f2f2f2;
     color: #000;
@@ -237,8 +276,84 @@ th:last-child, td:last-child {
     border-radius: 4px;
   }
 
-  /* 響應式微調 */
-  @media (max-width: 650px) {
+  /* 📱 手機與平板響應式設定 (螢幕寬度 <= 768px) */
+  @media (max-width: 768px) {
+    /* 顯示漢堡選單按鈕 */
+    .menu-toggle {
+      display: block;
+    }
+
+    /* 將選單改為側邊抽屜 (Sidebar) */
+    .nav-menu {
+      position: fixed;
+      top: 0;
+      right: -280px; /* 預設藏在右側畫面外 */
+      width: 280px;
+      height: 100vh;
+      background-color: #ffffff;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 60px 15px 20px 15px;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.15);
+      transition: right 0.3s ease-in-out;
+      z-index: 1002;
+      overflow-y: auto;
+    }
+
+    /* 展開側邊欄 */
+    .nav-menu.active {
+      right: 0;
+    }
+
+    .nav-menu li {
+      margin-left: 0;
+      margin-bottom: 8px;
+    }
+
+    .nav-menu a, .dropbtn {
+      font-size: 18px;
+      padding: 12px 15px;
+    }
+
+    /* 側邊欄頂部關閉按鈕 */
+    .sidebar-close {
+      display: block;
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    /* 手機版下拉選單處理 */
+    .dropdown:hover .dropdown-content {
+      display: none; /* 關閉 hover 展開 */
+    }
+    .dropdown-content {
+      position: static;
+      box-shadow: none;
+      background-color: #f0f4f8;
+      border-radius: 4px;
+      margin-top: 5px;
+    }
+    .dropdown.open .dropdown-content {
+      display: block; /* 點擊才展開 */
+    }
+
+    /* 內容容器與網格縮減 */
+    .hero-banner {
+      height: 160px;
+    }
+    .hero-banner h1 {
+      font-size: 28px;
+    }
+    .container {
+      margin: 15px auto;
+      padding: 15px;
+    }
     .class-grid {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -257,14 +372,20 @@ th:last-child, td:last-child {
   <!-- 頂部導覽列 -->
   <nav class="navbar">
     <div class="nav-title">榮譽積點查詢系統</div>
-    <ul class="nav-menu">
+    
+    <!-- 手機版漢堡按鈕 -->
+    <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar(true)">☰</button>
+
+    <!-- 導覽選單（手機版轉換為側邊欄） -->
+    <ul class="nav-menu" id="navMenu">
+      <button class="sidebar-close" onclick="toggleSidebar(false)">✕</button>
       <li><a href="#" onclick="switchTab('home', '學生榮譽積點查詢')">首頁</a></li>
       <li><a href="#" onclick="switchTab('sheets-fill', '班級積點填報')">榮譽積點sheets填報</a></li>
       <li><a href="#" onclick="switchTab('ranking', '榮譽積點排名')">榮譽積點排名</a></li>
       <li><a href="#" onclick="switchTab('class-query', '班級榮譽積點查詢')">班級榮譽積點查詢</a></li>
       <li><a href="#" onclick="switchTab('pwd-change', '驗證碼修改')">驗證碼修改</a></li>
-      <li class="dropdown">
-        <a class="dropbtn">行政積點填報 ▾</a>
+      <li class="dropdown" id="adminDropdown">
+        <a class="dropbtn" onclick="toggleMobileDropdown(event)">行政積點填報 ▾</a>
         <div class="dropdown-content">
           <a href="#" onclick="switchTab('academic', '教務處積點填報')">教務處</a>
           <a href="#" onclick="switchTab('general', '總務處積點填報')">總務處</a>
@@ -274,6 +395,9 @@ th:last-child, td:last-child {
       </li>
     </ul>
   </nav>
+
+  <!-- 側邊欄開啟時的半透明背景遮罩 -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
 
   <!-- Banner 橫幅 -->
   <div class="hero-banner">
@@ -418,6 +542,30 @@ th:last-child, td:last-child {
   </div>
 
 <script>
+// ==================== 側邊欄控制邏輯 ====================
+function toggleSidebar(show) {
+  if (typeof show === 'boolean') {
+    if (show) {
+      $("#navMenu").addClass("active");
+      $("#sidebarOverlay").addClass("active");
+    } else {
+      $("#navMenu").removeClass("active");
+      $("#sidebarOverlay").removeClass("active");
+    }
+  } else {
+    $("#navMenu").toggleClass("active");
+    $("#sidebarOverlay").toggleClass("active");
+  }
+}
+
+// 手機版下拉選單點擊展開/折疊
+function toggleMobileDropdown(e) {
+  if ($(window).width() <= 768) {
+    e.preventDefault();
+    $("#adminDropdown").toggleClass("open");
+  }
+}
+
 // ==================== 頁面切換控制 ====================
 function switchTab(tabId, titleText) {
   // 隱藏所有分頁內容
@@ -431,6 +579,9 @@ function switchTab(tabId, titleText) {
   if (tabId === 'ranking') {
     loadRankingData();
   }
+
+  // 點擊任何頁面按鈕後，自動收起手機側邊欄
+  toggleSidebar(false);
 }
 
 // ==================== 1. 首頁積點查詢邏輯 ====================
