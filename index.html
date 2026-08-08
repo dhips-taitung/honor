@@ -20,7 +20,7 @@
     background-color: #f8f9fa;
   }
 
-  /* 頂部導覽列 (Navbar) */
+  /* 頂部導覽列 (Navbar) - 【修正】提高 z-index 至 1001，確保高於背景遮罩 */
   .navbar {
     background-color: #ffffff;
     border-bottom: 1px solid #e0e0e0;
@@ -30,7 +30,7 @@
     padding: 10px 20px;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 1001;
   }
   .nav-title {
     font-size: 20px;
@@ -64,7 +64,7 @@
     color: #0056b3;
   }
 
-  /* 漢堡圖示與關閉按鈕（預設桌面版隱藏） */
+  /* 漢堡圖示與關閉按鈕 */
   .menu-toggle {
     display: none;
     background: none;
@@ -78,7 +78,7 @@
     display: none;
   }
 
-  /* 側邊欄背景遮罩 */
+  /* 側邊欄背景遮罩 - 【修正】z-index 降低為 999，確保只遮蓋下方頁面，不蓋住側邊欄 */
   .sidebar-overlay {
     display: none;
     position: fixed;
@@ -87,7 +87,7 @@
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.5);
-    z-index: 1001;
+    z-index: 999;
   }
   .sidebar-overlay.active {
     display: block;
@@ -283,7 +283,7 @@
       display: block;
     }
 
-    /* 將選單改為側邊抽屜 (Sidebar) */
+    /* 將選單改為側邊抽屜 (Sidebar) - 【修正】提高 z-index 至 1002，白底無遮罩 */
     .nav-menu {
       position: fixed;
       top: 0;
@@ -294,7 +294,7 @@
       flex-direction: column;
       align-items: stretch;
       padding: 60px 15px 20px 15px;
-      box-shadow: -2px 0 10px rgba(0,0,0,0.15);
+      box-shadow: -2px 0 10px rgba(0,0,0,0.2);
       transition: right 0.3s ease-in-out;
       z-index: 1002;
       overflow-y: auto;
@@ -313,6 +313,7 @@
     .nav-menu a, .dropbtn {
       font-size: 18px;
       padding: 12px 15px;
+      color: #333;
     }
 
     /* 側邊欄頂部關閉按鈕 */
@@ -330,7 +331,7 @@
 
     /* 手機版下拉選單處理 */
     .dropdown:hover .dropdown-content {
-      display: none; /* 關閉 hover 展開 */
+      display: none;
     }
     .dropdown-content {
       position: static;
@@ -340,7 +341,7 @@
       margin-top: 5px;
     }
     .dropdown.open .dropdown-content {
-      display: block; /* 點擊才展開 */
+      display: block;
     }
 
     /* 內容容器與網格縮減 */
@@ -396,7 +397,7 @@
     </ul>
   </nav>
 
-  <!-- 側邊欄開啟時的半透明背景遮罩 -->
+  <!-- 側邊欄開啟時的半透明背景遮罩（移至同層） -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
 
   <!-- Banner 橫幅 -->
