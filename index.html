@@ -157,20 +157,27 @@
     background-color: #0056b3;
   }
 
-  /* 表格樣式 */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  table, th, td {
-    border: 1px solid #444;
-  }
-  th, td {
-    padding: 8px 12px;
-    text-align: center;
-    vertical-align: middle;
-  }
+/* 表格樣式 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+table, th, td {
+  border: 1px solid #444;
+}
+th, td {
+  padding: 8px 12px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap; /* 【新增】強制表格欄位內的文字不要換行 */
+}
+
+/* 【新增】針對最後一欄「事蹟」，允許其長文字自由換行並維持適當寬度 */
+th:last-child, td:last-child {
+  white-space: normal;
+  min-width: 200px;
+}
   thead {
     background-color: #f2f2f2;
     color: #000;
