@@ -20,7 +20,7 @@
     background-color: #f8f9fa;
   }
 
-  /* 頂部導覽列 (Navbar) - 【修正】提高 z-index 至 1001，確保高於背景遮罩 */
+  /* 頂部導覽列 (Navbar) */
   .navbar {
     background-color: #ffffff;
     border-bottom: 1px solid #e0e0e0;
@@ -78,7 +78,7 @@
     display: none;
   }
 
-  /* 側邊欄背景遮罩 - 【修正】z-index 降低為 999，確保只遮蓋下方頁面，不蓋住側邊欄 */
+  /* 側邊欄背景遮罩 */
   .sidebar-overlay {
     display: none;
     position: fixed;
@@ -186,7 +186,7 @@
     background-color: #0056b3;
   }
 
-  /* 表格樣式 */
+  /* 預設電腦版表格樣式 */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -283,11 +283,11 @@
       display: block;
     }
 
-    /* 將選單改為側邊抽屜 (Sidebar) - 【修正】提高 z-index 至 1002，白底無遮罩 */
+    /* 將選單改為側邊抽屜 (Sidebar) */
     .nav-menu {
       position: fixed;
       top: 0;
-      right: -280px; /* 預設藏在右側畫面外 */
+      right: -280px;
       width: 280px;
       height: 100vh;
       background-color: #ffffff;
@@ -344,17 +344,47 @@
       display: block;
     }
 
-    /* 內容容器與網格縮減 */
+    /* 橫幅與容器微調 */
     .hero-banner {
       height: 160px;
     }
     .hero-banner h1 {
       font-size: 28px;
     }
+
+    /* 縮減手機版邊邊留白，爭取更多表格欄位空間 */
     .container {
-      margin: 15px auto;
-      padding: 15px;
+      margin: 10px auto;
+      padding: 15px 8px;
+      width: 98%;
     }
+
+    /* 📱【新增/修改】手機版表格自動適應寬度 */
+    table {
+      width: 100%;
+      table-layout: auto;
+    }
+    th, td {
+      padding: 6px 2px; /* 緊湊內距，避免撐寬 */
+      font-size: 13px;   /* 調整手機版字級，讓 7 個欄位完美並排 */
+      white-space: nowrap;
+    }
+    thead, tbody {
+      font-size: 13px;
+    }
+
+    /* 手機版首頁表格最小寬度調整 */
+    #mytable th:last-child, 
+    #mytable td:last-child {
+      min-width: 120px;
+    }
+
+    /* 避免極窄螢幕破版，提供平滑橫向滾動保護 */
+    .tab-content {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     .class-grid {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -397,7 +427,7 @@
     </ul>
   </nav>
 
-  <!-- 側邊欄開啟時的半透明背景遮罩（移至同層） -->
+  <!-- 側邊欄開啟時的半透明背景遮罩 -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
 
   <!-- Banner 橫幅 -->
