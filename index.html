@@ -522,7 +522,7 @@
 
     <!-- 3. 榮譽積點排名 -->
     <div id="tab-ranking" class="tab-content">
-      <h2 style="text-align: center;">榮譽積點總排名</h2>
+      <h2 style="text-align: center;">榮譽積點總排名 (前50名)</h2>
       <table id="sheetTable">
         <thead id="tableHead"></thead>
         <tbody id="tableBody"></tbody>
@@ -673,6 +673,7 @@ async function queryData(sheet, id){
 function outputTable(title, rows){
   $("#mytable thead").empty();
   $("#mytable tbody").empty();
+  $("#mytable append").empty();
   $("#mytable thead").append("<tr>" + title.map(t => "<th>"+t+"</th>").join("") + "</tr>");
   rows.forEach(r => {
     $("#mytable tbody").append("<tr>" + r.map(c => "<td>"+c+"</td>").join("")+"</tr>");
@@ -716,7 +717,7 @@ $("#exam").on("change", function(){
   doQuery();
 });
 
-// ==================== 3. 積點排名邏輯 ====================
+// ==================== 3. 積點排名邏輯 (修改為顯示前 50 名) ====================
 let isRankingLoaded = false;
 function loadRankingData() {
   if (isRankingLoaded) return;
@@ -743,7 +744,8 @@ function loadRankingData() {
       });
       tableHead.appendChild(trHead);
 
-      data.table.rows.forEach(r => {
+      // 【修改處】：使用 .slice(0, 50) 確保最多只取前 50 名資料
+      data.table.rows.slice(0, 50).forEach(r => {
         const tr = document.createElement("tr");
         r.c.forEach(cell => {
           const td = document.createElement("td");
